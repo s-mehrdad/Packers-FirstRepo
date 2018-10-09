@@ -36,7 +36,7 @@ void ConsoleScreen_SizeColourPosition (COORD screenPosition, COORD ColRowCount, 
   // the used coordinate argument is in needed columns and rows
   RECT consoleScreen;
   GetWindowRect (consoleWindow, &consoleScreen);
-  MoveWindow (consoleWindow, consoleScreen.top, consoleScreen.left, static_cast<int> (ColRowCount.X*9.3), ColRowCount.Y*22, true);
+  MoveWindow (consoleWindow, consoleScreen.top, consoleScreen.left, static_cast<int> (ColRowCount.X*9.3), ColRowCount.Y * 22, true);
 
   screenBinfoEX.cbSize = sizeof (screenBinfoEX); // the right size is important for many structures in the windows API
   GetConsoleScreenBufferInfoEx (consoleOutput, &screenBinfoEX);
@@ -58,7 +58,7 @@ void ColourCout (std::string strCharacter, WORD Colour) {
   GetConsoleScreenBufferInfoEx (consoleOutput, &screenBinfoEX); // update info
   screenBinfoEXstorage = screenBinfoEX; // store
   SetConsoleTextAttribute (consoleOutput, Colour); // changing the colour
-  std::cout<<strCharacter; // print
+  std::cout << strCharacter; // print
   SetConsoleTextAttribute (consoleOutput, screenBinfoEXstorage.wAttributes); // back to the past colour
   GetConsoleScreenBufferInfoEx (consoleOutput, &screenBinfoEX); // update info
 }
