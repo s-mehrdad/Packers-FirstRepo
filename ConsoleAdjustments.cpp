@@ -1,7 +1,9 @@
 
-#pragma once
 
 #include "pch.h"
+#include "ConsoleAdjustments.h"
+#include "Shared.h"
+
 
 // console screen properties
 HANDLE consoleOutput = GetStdHandle (STD_OUTPUT_HANDLE); // for simplification (constant calls to the function)
@@ -10,6 +12,8 @@ CONSOLE_SCREEN_BUFFER_INFOEX screenBinfoEXstorage; // the same
 CONSOLE_FONT_INFOEX fontInfoEX; // the same
 CONSOLE_CURSOR_INFO cursorInfo; // the same
 HWND consoleWindow = GetConsoleWindow (); // // for simplification (constant calls to the function)
+
+
 void ConsoleFont_SizeColour (COORD fontSize, LPCWSTR fontName, WORD fontColour) {
   fontInfoEX.cbSize = sizeof (fontInfoEX); // the right size is important for many structures in the windows API
   GetCurrentConsoleFontEx (consoleOutput, false, &fontInfoEX);
@@ -26,6 +30,8 @@ void ConsoleFont_SizeColour (COORD fontSize, LPCWSTR fontName, WORD fontColour) 
   //  0: black (background)  1: Blue  //  2 : Green  //  3 : Cyan  //  4 : Red  //  5 : Purple  //  6 : Yellow (Dark)  //  7 : Default white  //  8 : Gray/Grey  //  9 : Bright blue  //  10 : Bright green  //  11 : Bright cyan  //  12 : Bright red  //  13 : Pink/Magenta  //  14 : Yellow  //  15 : Bright white
 
 }
+
+
 void ConsoleScreen_SizeColourPosition (COORD screenPosition, COORD ColRowCount, COLORREF BGcolour) {
   // draw the window from the coordinate argument
   // and ignore the new width, height in pixels (cx, cy) i.e. (0, 0) by setting the SWP_NOSIZE flag
@@ -48,12 +54,16 @@ void ConsoleScreen_SizeColourPosition (COORD screenPosition, COORD ColRowCount, 
   SetConsoleScreenBufferInfoEx (consoleOutput, &screenBinfoEX);
   SetConsoleWindowInfo (consoleOutput, false, &screenBinfoEX.srWindow);
 }
+
+
 void ConsoleCursor_State (bool CursorVisible) {
   GetConsoleCursorInfo (consoleOutput, &cursorInfo);
   cursorInfo.bVisible = CursorVisible;
   //cursorInfo.dwSize = _int;
   SetConsoleCursorInfo (consoleOutput, &cursorInfo);
 }
+
+
 void ColourCout (std::string strCharacter, WORD Colour) {
   GetConsoleScreenBufferInfoEx (consoleOutput, &screenBinfoEX); // update info
   screenBinfoEXstorage = screenBinfoEX; // store
@@ -61,4 +71,14 @@ void ColourCout (std::string strCharacter, WORD Colour) {
   std::cout << strCharacter; // print
   SetConsoleTextAttribute (consoleOutput, screenBinfoEXstorage.wAttributes); // back to the past colour
   GetConsoleScreenBufferInfoEx (consoleOutput, &screenBinfoEX); // update info
+}
+
+
+void gotoXY (int x, int y) {
+  COORD Position;
+  Position.X = x;
+  Position.Y = y;
+  //protectedSetCursor = true;
+  SetConsoleCursorPosition (consoleOutput, Position);
+  //protectedSetCursor = false;
 }
