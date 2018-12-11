@@ -1,162 +1,112 @@
-﻿
+﻿// ********************************************************************************
+/// <summary>
+/// 
+/// </summary>
+/// <created>ʆϒʅ,29.09.2018</created>
+/// <changed>ʆϒʅ,08.12.2018</changed>
+// ********************************************************************************
 
 #include "pch.h"
+#include "Packer.h"
 #include "ConsoleAdjustments.h"
 #include "Shared.h"
-#include "Packer.h"
 #include "Area.h"
+#include "Surround.h"
 
 
+//TODO different packer types can be added
+struct eventFeed blinkA ( DELAY_ONE, u8" ", F_bWHITE );
+struct eventFeed blinkB ( DELAY_TWO, u8"☻", F_bWHITE );
+struct eventFeed packed ( DELAY_THREE, u8"▪", F_bWHITE );
+struct eventFeed ready ( DELAY_FOUR, u8"☻", F_bWHITE );
 
-Packer::Packer (short quickReSeed) {
 
-  // random first placement
-  int i { 0 };
-  int j { 0 };
-  //reSeedStorage = quickReSeed;
-  srand ((unsigned int)time (NULL) + quickReSeed);
-  do {
-    i = rand () % (19 - 3) + 3;
-    j = rand () % (89 - 3) + 3;
-  } while (i % 2 == 0 || j % 2 == 0);
-  gotoXY (j, i); ColourCout (u8"☻", 0x0f);
-  position.X = j;
-  position.Y = i;
+Packer::Packer ( unsigned char quickReSeed )
+{
+    id = quickReSeed;
+    address = this;
+    aspirationsSeeds [count] = quickReSeed;
+    count++;
 
-  // random direction
-  int r { 0 };
-  srand ((unsigned int)time (NULL) + quickReSeed);
-  r = (rand () % (1111 - 20) + 20);
-  if (r % 2 == 0) {
-    RchanceL = true;
-  }
-  else {
-    RchanceL = false;
-  }
+    //rand function seed provider + quick reseeding
+    srand ( (unsigned int) time ( NULL ) + id );
+
+    //TODO add: change made by packers in their surround
+    moves [0] = blinkA;
+    moves [1] = blinkB;
+    moves [2] = packed;
+    moves [3] = ready;
+
+    // random beginning position
+    do
+    {
+        position.X = rand () % ( 89 - 3 ) + 3;
+        position.Y = rand () % ( 19 - 3 ) + 3;
+    } while ( position.X % 2 == 0 || position.Y % 2 == 0 );
+    colourInserter ( u8"☻", F_bWHITE, position );
+
+    // random direction
+    int d { 0 };
+    d = ( rand () % ( 1111 - 20 ) + 20 );
+    if ( d % 2 == 0 )
+    {
+        RchanceL = true;
+    } else
+    {
+        RchanceL = false;
+    }
+
+    // random state
+    //TODO can be omitted (going to far for a console game?! :) )
+    int s { 0 };
+    s = ( rand () % 3 + 1 );
+    if ( s == 1 )
+        state = 1000; // normal
+    if ( s == 2 )
+        state = 2000; // not in the mood
+    if ( s == 3 )
+        state = 3000; // tired
+
+    // making packer's aspirations ready... :)
+    lastAspiration = id * 100;
 };
 
 
-//add:
-//Packer (//userchoice) :Sign () {};
+unsigned char Packer::count { 0 };
+unsigned char Packer::aspirationsSeeds [32] { 0 };
+unsigned char Packer::aspirations [32] { 10 };
 
 
-//static void blinkPacking (const std::list<Packer> input, unsigned char mode) {
-//  std::list<packMan> temp { input };
-//  //for (int i = 0; i < 1000; i++) {
-
-//    do {
-//      //do {} while (protectedSetCursor == true);
-//      gotoXY (temp.front ().position.X, temp.front ().position.Y);
-//      ColourCout (u8"▪", 0x0f);
-//      temp.pop_front ();
-//    } while (temp.size () != 0);
-//    std::this_thread::sleep_for (std::chrono::milliseconds (modeToMilliS));; // add delays to the countdown
-//    temp = input;
-
-//    do {
-//      //do {} while (protectedSetCursor == true);
-//      gotoXY (temp.front ().position.X, temp.front ().position.Y);
-//      ColourCout (u8"☻", 0x0f);
-//      temp.pop_front ();
-//    } while (temp.size () != 0);
-//    std::this_thread::sleep_for (std::chrono::milliseconds (modeToMilliS));;
-//    temp = input;
-//  //}
-//};
-
-
-// no static here, since it is not allowed
-void Packer::blinkPacking (COORD position, unsigned char mode) {
-  //▪▫
-  //add: if for characters
-  //add: state show/save
-  short modeToMilliS { 1 };
-  switch (mode) {
-  case 1:
-    modeToMilliS = 500;
-    break;
-  case 2:
-    modeToMilliS = 400;
-    break;
-  case 3:
-    modeToMilliS = 200;
-    break;
-  case 4:
-    modeToMilliS = 1000;
-    break;
-  }
-  //do {} while (protectedSetCursor == true);
-  std::this_thread::sleep_for (std::chrono::milliseconds (1000));;
-  gotoXY (position.X, position.Y);
-  ColourCout (u8"▪", 0x0f);
-  std::this_thread::sleep_for (std::chrono::milliseconds (modeToMilliS));;
-  //do {} while (protectedSetCursor == true);
-  gotoXY (position.X, position.Y);
-  ColourCout (u8"☻", 0x0f);
-  std::this_thread::sleep_for (std::chrono::milliseconds (modeToMilliS));;
+void Packer::colourInserter ( std::string str, WORD colour, COORD pos )
+{
+    GetConsoleScreenBufferInfoEx ( consoleOutput, &screenBinfoEX );
+    SetConsoleCursorPosition ( consoleOutput, pos );
+    SetConsoleTextAttribute ( consoleOutput, colour );
+    std::cout << str;
 };
 
-void Packer::horizontalMovement (std::list<Packer> input, unsigned char mode) {
-  short modeToMilliS { 1 };
-  COORD position;
-  switch (mode) {
-  case 1:
-    modeToMilliS = 500;
-    break;
-  case 2:
-    modeToMilliS = 400;
-    break;
-  case 3:
-    modeToMilliS = 200;
-    break;
-  case 4:
-    modeToMilliS = 1000;
-    break;
-  }
-  for (int i = 0; i < 1000; i++) {
-    do {
-      if (input.front ().RchanceL == true) {
-        if (input.front ().position.X != 87) {
-          //do {} while (protectedSetCursor == true);
-          gotoXY (input.front ().position.X, input.front ().position.Y);
-          ColourCout (u8" ", 0x0f);
-          input.front ().position.X += 2;
-          //do {} while (protectedSetCursor == true);
-          gotoXY (input.front ().position.X, input.front ().position.Y);
-          ColourCout (u8"☻", 0x0f);
-          position.X = input.front ().position.X;
-          position.Y = input.front ().position.Y;
-          Area::yellow (position);
-          Packer::blinkPacking (position, 3);
-          input.emplace_back (input.front ());
-          input.pop_front ();
-          std::this_thread::sleep_for (std::chrono::milliseconds (modeToMilliS));;
-          Area::green (position);
+
+void Packer::aspirationsSetter (void)
+{
+    unsigned char randomNumber { 0 };
+    for ( unsigned char i = 0; i < count; i++ )
+    {
+        srand ( (unsigned int) time ( NULL ) + aspirationsSeeds [i] );
+        randomNumber = rand () % ( 4 - 1 ) + 1;
+        switch ( randomNumber )
+        {
+            case 1:
+                aspirations [i] = 10;
+                break;
+            case 2:
+                aspirations [i] = 20;
+                break;
+            case 3:
+                aspirations [i] = 30;
+                break;
+            case 4:
+                aspirations [i] = 40;
+                break;
         }
-        else
-          input.front ().RchanceL = false;
-      }
-      else
-        if (input.front ().position.X != 3) {
-          //do {} while (protectedSetCursor == true);
-          gotoXY (input.front ().position.X, input.front ().position.Y);
-          ColourCout (u8" ", 0x0f);
-          input.front ().position.X -= 2;
-          //do {} while (protectedSetCursor == true);
-          gotoXY (input.front ().position.X, input.front ().position.Y);
-          ColourCout (u8"☻", 0x0f);
-          position.X = input.front ().position.X;
-          position.Y = input.front ().position.Y;
-          Area::yellow (position);
-          Packer::blinkPacking (position, 3);
-          input.emplace_back (input.front ());
-          input.pop_front ();
-          std::this_thread::sleep_for (std::chrono::milliseconds (modeToMilliS));;
-          Area::green (position);
-        }
-        else
-          input.front ().RchanceL = true;
-      //add: while user decide to involve himself
-    } while (input.size () != 0);
-  }
-};
+    }
+}

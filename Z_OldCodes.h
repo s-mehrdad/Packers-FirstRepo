@@ -2,18 +2,18 @@
 /// <summary>
 /// 
 /// </summary>
-/// <created>ʆϒʅ,13.10.2018</created>
-/// <changed>ʆϒʅ,14.11.2018</changed>
+/// <created>ʆϒʅ,11.12.2018</created>
+/// <changed>ʆϒʅ,11.12.2018</changed>
 // ********************************************************************************
 
 #pragma once
 
 
-#ifndef SHARED_H
-#define SHARED_H
+#ifndef Z_OLDCODES_H
+#define Z_OLDCODES_H
 
 
+void muTex ();
 
 
-
-#endif // !SHARED_H
+#endif // !Z_OLDCODES_H
