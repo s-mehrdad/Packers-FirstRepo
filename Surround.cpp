@@ -155,7 +155,7 @@ struct Surround::menus
 
 struct Surround::guideBar
 {
-    COORD startPoint { 3,27 };
+    COORD startPoint { 3,28 };
     struct signs
     {
         std::string parts [3] {
@@ -231,6 +231,8 @@ struct Surround::statusBar
 
     struct resources
     {
+        //TODO add a possible aspiration renew-er for packers (bc of performance here)
+
         std::string str { u8"resources>" };
         WORD colour { F_bPURPLE };
         COORD startPoint { 91,10 };
@@ -338,7 +340,7 @@ struct Surround::loadingBar
     WORD colourOne { B_bBLUE | F_bWHITE };
     WORD colourTwo { B_BLACK | F_bGREEN };
     WORD colourThree { B_BLACK | F_bWHITE };
-    COORD startPoint { SCREEN_W - 10, SCREEN_H - 1 };
+    COORD startPoint { SCREEN_W - 13, SCREEN_H - 2 };
     void inserter ()
     {
         COORD position { startPoint };
