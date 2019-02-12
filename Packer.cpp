@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,29.09.2018</created>
-/// <changed>ʆϒʅ,28.01.2019</changed>
+/// <changed>ʆϒʅ,12.02.2019</changed>
 // ********************************************************************************
 
 #include "pch.h"
@@ -14,13 +14,6 @@
 #include "Surround.h"
 
 
-//TODO different packer types can be added
-struct eventFeed blinkA ( DELAY_ONE, u8" ", F_bWHITE );
-struct eventFeed blinkB ( DELAY_TWO, u8"☻", F_bWHITE );
-struct eventFeed packed ( DELAY_THREE, u8"▪", F_bWHITE );
-struct eventFeed ready ( DELAY_FOUR, u8"☻", F_bWHITE );
-
-
 Packer::Packer ( unsigned char quickReSeed )
 {
     id = quickReSeed - 1;
@@ -28,14 +21,36 @@ Packer::Packer ( unsigned char quickReSeed )
     aspirationsSeeds [count] = quickReSeed;
     count++;
 
-    //rand function seed provider + quick reseeding
-    srand ( (unsigned int) time ( NULL ) + id );
 
-    //TODO add: change made by packers in their surround
-    moves [0] = blinkA;
-    moves [1] = blinkB;
-    moves [2] = packed;
-    moves [3] = ready;
+    //rand function seed provider + quick reseeding
+    srand ( (unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 50.5 ) );
+
+    //TODO different packer types can be added
+    // random character
+    int c { 0 };
+    c = ( rand () % 2 + 1 );
+    if ( c == 1 )
+        character = u8"☻";
+    else
+        character = u8"☺";
+
+    if ( character == u8"☻" )
+    {
+        _action [0] = { DELAY_ONE, 0 };
+        _action [1] = { DELAY_TWO, 1 };
+        _action [2] = { DELAY_THREE, 3 };
+        _action [3] = { DELAY_FOUR, 0 };
+    } else
+    {
+        _action [0] = { DELAY_ONE, 0 };
+        _action [1] = { DELAY_TWO, 2 };
+        _action [2] = { DELAY_THREE, 3 };
+        _action [3] = { DELAY_FOUR, 0 };
+    }
+
+
+    //rand function seed provider + quick reseeding
+    srand ( (unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 55.5 ) );
 
     // random beginning position
     do
@@ -43,7 +58,10 @@ Packer::Packer ( unsigned char quickReSeed )
         position.X = rand () % ( ( SCREEN_W - 18 ) - 3 ) + 3;
         position.Y = rand () % ( ( SCREEN_H - 11 ) - 3 ) + 3;
     } while ( position.X % 2 == 0 || position.Y % 2 == 0 );
-    colourInserter ( u8"☻", F_bWHITE, position );
+
+
+    //rand function seed provider + quick reseeding
+    srand ( (unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 60.5 ) );
 
     // random direction
     int d { 0 };
@@ -56,19 +74,47 @@ Packer::Packer ( unsigned char quickReSeed )
         RchanceL = false;
     }
 
+
+    //rand function seed provider + quick reseeding
+    srand ( (unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 65.5 ) );
+
     // random state
-    //TODO can be omitted (going to far for a console game?! :) )
+    //TODO changed (part of smart pants of packers :) )
     int s { 0 };
     s = ( rand () % 3 + 1 );
     if ( s == 1 )
-        state = 1000; // normal
+        baseState = 1000; // normal
     if ( s == 2 )
-        state = 2000; // not in the mood
+        baseState = 2000; // not in the mood
     if ( s == 3 )
-        state = 3000; // tired
+        baseState = 3000; // tired
+
 
     // making packer's aspirations ready... :)
     lastAspiration = id * 100;
+
+
+    //rand function seed provider + quick reseeding
+    srand ( (unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 70.5 ) );
+
+    // random motivation
+    int m { 0 };
+    m = ( rand () % 6 + 1 );
+    if ( m == 1 )
+        baseMotivation = F_bBLUE; // independent-chewer
+    if ( m == 2 )
+        baseMotivation = F_GREEN; // green-national-chewer
+    if ( m == 3 )
+        baseMotivation = F_RED; // red-national-chewer
+    if ( m == 4 )
+        baseMotivation = F_PURPLE; // not-know-chewer
+    if ( m == 5 )
+        baseMotivation = F_bYELLOW; // free-chewer
+    if ( m == 6 )
+        baseMotivation = F_WHITE; // neutral-chewer
+
+
+    baseSetter ();
 };
 
 
@@ -77,13 +123,19 @@ unsigned char Packer::aspirationsSeeds [32] { 0 };
 unsigned char Packer::aspirations [32] { 10 };
 
 
-void Packer::colourInserter ( std::string str, WORD colour, COORD pos )
+void Packer::baseSetter ( void )
 {
-    GetConsoleScreenBufferInfoEx ( consoleOutput, &screenBinfoEX );
-    SetConsoleCursorPosition ( consoleOutput, pos );
-    SetConsoleTextAttribute ( consoleOutput, colour );
-    std::cout << str;
+    Inserter::colourInserter ( character, baseMotivation, position );
 };
+
+
+//void Packer::colourInserter ( std::string str, WORD colour, COORD pos )
+//{
+//    GetConsoleScreenBufferInfoEx ( consoleOutput, &screenBinfoEX );
+//    SetConsoleCursorPosition ( consoleOutput, pos );
+//    SetConsoleTextAttribute ( consoleOutput, colour );
+//    std::cout << str;
+//};
 
 
 void Packer::aspirationsSetter ( void )
