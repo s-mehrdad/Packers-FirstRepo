@@ -194,10 +194,12 @@ xcopy /y /d "DLLs_x64\ConsoleAdjustments.xml" "$(OutDir)"</Command>
     <ClInclude Include="resource.h" />
     <ClInclude Include="Shared.h" />
     <ClInclude Include="Surround.h" />
+    <ClInclude Include="Tale.h" />
     <ClInclude Include="Z_OldCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Area.cpp" />
+    <ClCompile Include="Tale.cpp" />
     <ClCompile Include="Z_OldCodes.cpp" />
     <ClCompile Include="Packer.cpp" />
     <ClCompile Include="Packers.cpp" />
@@ -216,8 +218,12 @@ xcopy /y /d "DLLs_x64\ConsoleAdjustments.xml" "$(OutDir)"</Command>
   <ItemGroup>
     <Image Include="ScreenShot.jpg" />
     <Image Include="ScreenShot_2.jpg" />
+    <Image Include="ScreenShot_3.jpg" />
+    <Image Include="ScreenShot_4.jpg" />
+    <Image Include="ScreenShot_5.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
     <None Include="Packers.aps" />
     <None Include="README.md" />
   </ItemGroup>
