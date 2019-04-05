@@ -218,12 +218,12 @@ xcopy /y /d "DLLs_x64\ConsoleAdjustments.xml" "$(OutDir)"</Command>
   <ItemGroup>
     <Image Include="ScreenShot.jpg" />
     <Image Include="ScreenShot_2.jpg" />
-    <Image Include="ScreenShot_3.jpg" />
+    <Image Include="ScreenShot_3-2.jpg" />
     <Image Include="ScreenShot_4.jpg" />
     <Image Include="ScreenShot_5.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".gitignore" />
+    <None Include="aGiant" />
     <None Include="Packers.aps" />
     <None Include="README.md" />
   </ItemGroup>
