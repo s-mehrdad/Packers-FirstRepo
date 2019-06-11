@@ -1,6 +1,9 @@
 # Introduction 
 Packers is a funny game, aimed to make people more aware of environment while laughing.
 The inspiration behind it comes from looking at what people do and the old packman game.
+The game is developed using just characters to represent the humans's character simply and honestly.
+
+<img href="https://github.com/BirdSofts" src="https://github.com/BirdSofts/Packers/blob/master/ScreenShot_3-3.jpg" width="600" height="386" alt="ScreenShot">
 
 <img href="https://github.com/BirdSofts" src="https://github.com/BirdSofts/Packers/blob/master/ScreenShot_5.jpg" width="600" height="386" alt="ScreenShot">
 
