@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,29.09.2018</created>
-/// <changed>ʆϒʅ,01.04.2019</changed>
+/// <changed>ʆϒʅ,21.06.2019</changed>
 // ********************************************************************************
 
 #pragma once
@@ -15,12 +15,13 @@
 
 class Packer
 {
+private:
+  bool direction;
 public:
   std::string character { u8"☻" };
   unsigned char id;
-  Packer *address;
+  Packer* address;
   COORD position;
-  bool RchanceL;
   unsigned short baseState;
   WORD baseMotivation;
   unsigned short lastAspiration;
@@ -38,18 +39,18 @@ public:
       std::string signs [4] { u8" ", u8"☻", u8"☺", u8"." };
       current = signs [id];
     }
-    bool operator< ( const actions &a ) const
+    bool operator< ( const actions& a ) const
     {
       return ( delay < a.delay );
     }
   }_action [4];
   Packer ( unsigned char );
   void baseSetter ( void );
+  bool& get ( void );
 
   static unsigned char count;
   static unsigned char aspirationsSeeds [32];
   static unsigned char aspirations [32];
-  //static void colourInserter ( std::string, WORD, COORD );
   static void aspirationsSetter ( void );
   //TODO add a possible aspiration renew-er for packers (possibly called from surround)
   //TODO add a possible motivation renew-er for packers (possibly called from surround)

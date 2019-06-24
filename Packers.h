@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,13.04.2019</created>
-/// <changed>ʆϒʅ,14.04.2019</changed>
+/// <changed>ʆϒʅ,23.06.2019</changed>
 // ********************************************************************************
 
 // Packers.h : Include file for standard system include files,
@@ -33,11 +33,16 @@
 #define FONT_NAME               L"Lucida Console"
 #define SCREEN_L                5
 #define SCREEN_T                5
-#define SCREEN_H                47 // use odd values
+#define SCREEN_H                45 // use odd values
 //? danger:
 //! if you choose the next value less than 100, you are on your own, since the packers don't have enough to chew! :)
-#define SCREEN_W                120 // the same
+#define SCREEN_W                111 // additionally use odd values
 #define BACKGROUND_COLOUR       RGB (50,50,50)
+
+
+// loading delay
+#define LOAD_ONE                1
+#define LOAD_TWO                5
 
 
 // used mode: chew-forward going!
@@ -50,7 +55,7 @@
 
 extern bool runningOne;
 extern bool runningTwo;
-extern unsigned char menusSelection;
+extern unsigned char menuState;
 extern bool MenusFlag;
 
 

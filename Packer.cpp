@@ -3,17 +3,20 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,29.09.2018</created>
-/// <changed>ʆϒʅ,14.04.2019</changed>
+/// <changed>ʆϒʅ,23.06.2019</changed>
 // ********************************************************************************
 
 //#include "pch.h"
 #include "Packers.h"
 #include "Packer.h"
-#include "Console.h"
+//#include "Area.h"
+//#include "Infobars.h"
+//#include "Menus.h"
+//#include "Status.h"
+//#include "Surround.h"
+//#include "Tale.h"
 #include "Shared.h"
-#include "Area.h"
-#include "Surround.h"
-#include "Tale.h"
+#include "Console.h"
 
 
 Packer::Packer ( unsigned char quickReSeed )
@@ -25,7 +28,7 @@ Packer::Packer ( unsigned char quickReSeed )
 
 
   //rand function seed provider + quick reseeding
-  srand ( (unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 50.5 ) );
+  srand ( ( unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 50.5 ) );
 
   //TODO different packer types can be added
   // random character
@@ -52,7 +55,7 @@ Packer::Packer ( unsigned char quickReSeed )
 
 
   //rand function seed provider + quick reseeding
-  srand ( (unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 55.5 ) );
+  srand ( ( unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 55.5 ) );
 
   // random beginning position
   do
@@ -63,22 +66,22 @@ Packer::Packer ( unsigned char quickReSeed )
 
 
   //rand function seed provider + quick reseeding
-  srand ( (unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 60.5 ) );
+  srand ( ( unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 60.5 ) );
 
   // random direction
   int d { 0 };
-  d = ( rand () % 499 + 1 );
+  d = ( rand () % 1000 + 1 );
   if ( d % 2 == 0 )
   {
-    RchanceL = true;
+    direction = true;
   } else
   {
-    RchanceL = false;
+    direction = false;
   }
 
 
   //rand function seed provider + quick reseeding
-  srand ( (unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 65.5 ) );
+  srand ( ( unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 65.5 ) );
 
   // random state
   //TODO changed (part of smart pants of packers :) )
@@ -97,7 +100,7 @@ Packer::Packer ( unsigned char quickReSeed )
 
 
   //rand function seed provider + quick reseeding
-  srand ( (unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 70.5 ) );
+  srand ( ( unsigned int) time ( NULL ) + static_cast<long>( quickReSeed * 70.5 ) );
 
   // random motivation
   int m { 0 };
@@ -127,17 +130,14 @@ unsigned char Packer::aspirations [32] { 10 };
 
 void Packer::baseSetter ( void )
 {
-  Inserter::colourInserter ( character, baseMotivation, position );
+  colourInserter ( character, baseMotivation, position );
 };
 
 
-//void Packer::colourInserter ( std::string str, WORD colour, COORD pos )
-//{
-//    GetConsoleScreenBufferInfoEx ( consoleOutput, &screenBinfoEX );
-//    SetConsoleCursorPosition ( consoleOutput, pos );
-//    SetConsoleTextAttribute ( consoleOutput, colour );
-//    std::cout << str;
-//};
+bool& Packer::get ( void )
+{
+  return direction;
+};
 
 
 void Packer::aspirationsSetter ( void )
@@ -145,7 +145,7 @@ void Packer::aspirationsSetter ( void )
   unsigned char randomNumber { 0 };
   for ( unsigned char i = 0; i < count; i++ )
   {
-    srand ( (unsigned int) time ( NULL ) + aspirationsSeeds [i] );
+    srand ( ( unsigned int) time ( NULL ) + aspirationsSeeds [i] );
     randomNumber = rand () % 4 + 1;
     switch ( randomNumber )
     {
