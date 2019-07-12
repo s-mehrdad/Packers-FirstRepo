@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,29.09.2018</created>
-/// <changed>ʆϒʅ,29.06.2019</changed>
+/// <changed>ʆϒʅ,13.07.2019</changed>
 // ********************************************************************************
 
 //#include "pch.h"
@@ -13,7 +13,15 @@
 #include "Console.h"
 
 
-Packer::Packer ( unsigned char quickReSeed )
+Actions::Actions () { action = "NULL"; delay = 2000; };
+Actions::Actions ( std::string str, unsigned short shr )
+{
+  action = str;
+  delay = shr;
+};
+
+
+Packer::Packer ( const unsigned char& quickReSeed )
 {
   // rand seed provider + quick reseeding
   std::time_t currentTime { std::chrono::system_clock::to_time_t ( std::chrono::system_clock::now () ) };
@@ -71,7 +79,7 @@ Packer::Packer ( unsigned char quickReSeed )
   switch ( rnd )
   {
     case 1:
-      motivation = F_bBLUE; // independent-chewer
+      motivation = F_BLUE; // independent-chewer
       break;
     case 2:
       motivation = F_GREEN; // green-national-chewer
@@ -83,7 +91,7 @@ Packer::Packer ( unsigned char quickReSeed )
       motivation = F_PURPLE; // not-know-chewer
       break;
     case 5:
-      motivation = F_bYELLOW; // free-chewer
+      motivation = F_YELLOW; // free-chewer
       break;
     case 6:
       motivation = F_WHITE; // neutral-chewer
@@ -136,7 +144,7 @@ Packer::Packer ( unsigned char quickReSeed )
 };
 
 
-unsigned short Packer::count { 0 };
+unsigned char Packer::count { 0 };
 //unsigned char Packer::aspirationsSeeds [32] { 0 };
 //unsigned char Packer::aspirations [32] { 10 };
 
@@ -178,9 +186,39 @@ const unsigned char& Packer::getAspiration ( void )
 };
 
 
-Actions::Actions () { action = "NULL"; delay = 2000; };
-Actions::Actions ( std::string str, unsigned short shr )
+void Packer::involve ( const unsigned short& instance )
 {
-  action = str;
-  delay = shr;
+  unsigned char temp;
+  temp = ( instance + 1 ) / 10;
+  switch ( temp )
+  {
+    case 1:
+      process [1] = { u8"☻", DELAY_TWO };
+      break;
+    case 2:
+      process [1] = { u8"☺", DELAY_TWO };
+      break;
+  }
+  temp = ( instance + 1 ) % 10;
+  switch ( temp )
+  {
+    case 1:
+      motivation = F_BLUE;
+      break;
+    case 2:
+      motivation = F_GREEN;
+      break;
+    case 3:
+      motivation = F_RED;
+      break;
+    case 4:
+      motivation = F_PURPLE;
+      break;
+    case 5:
+      motivation = F_YELLOW;
+      break;
+    case 6:
+      motivation = F_WHITE;
+      break;
+  }
 };
