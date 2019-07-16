@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,01.04.2019</created>
-/// <changed>ʆϒʅ,12.07.2019</changed>
+/// <changed>ʆϒʅ,16.07.2019</changed>
 // ********************************************************************************
 
 //#include "pch.h"
@@ -13,44 +13,148 @@
 #include "Console.h"
 
 
-Tale::Tale ()
-{
-  title = u8"The Packers";
-  colour = F_WHITE;
-  //TODO add: funny story of the game! :)
-};
-
-
 Narrator::Narrator ()
 {
+  //xx TODO add: funny story of the game! :)
   title = u8"The Narrator";
-  colour = F_YELLOW;
-  sceneOne [0] = u8"It is not sure, what the giant sees up there!";
-  sceneOne [1] = u8"Supercomputer still dates on load process of stone age!";
-  sceneOne [2] = u8"Thus the next scene is foreseen to let us wait a little!";
-  sceneTwo [0] = "It is already years since the first Packer put feet on the earth.";
-  sceneTwo [1] = "The evolution started and jet at stone age as obvious above they continue to pack!";
-  dAmSentences [0] = "I feel your enthusiasm to involve yourself, jet are you sure, whether you survive in stone age?!";
-  dAmSentences [1] = "The last one tried to decorate too much, it ended up nasty in stone age! :)";
-  dAmSentences [2] = "Oh yeah, tools and decorations are always appreciated!";
-  startPoint = { SCREEN_W - 60, SCREEN_H - 8 };
+  colours [0] = F_YELLOW;
+  colours [1] = F_bWHITE;
+  scenes [0][0] = u8"It is not sure, what the giant sees up there!";
+  scenes [0][1] = u8"Supercomputer still dates on load process of stone age!";
+  scenes [0][2] = u8"Thus the next scene is foreseen to let us wait a little!";
+  scenes [1][0] = "The spot pointed by the giant is interesting.";
+  scenes [1][1] = "He lives at a planet full of little creatures.";
+  scenes [1][2] = "Their history written in stone script is full of hunger.";
+  scenes [2][0] = u8"Years after the first Packer presence on earth,";
+  scenes [2][1] = u8"yet at stone age, at the teeth of continuous evolution,";
+  scenes [2][2] = u8"the packing process is obvious above!";
+  currentScene = 1;
+  firstMenuSentences [0] = u8"I feel your enthusiasm to involve yourself,";
+  firstMenuSentences [1] = u8"jet are you sure, whether you survive in stone age?! :)";
+  firstMenuSentences [2] = u8"Well, undecorated involvement is still involvement...";
+  firstMenuSentences [3] = u8"Oh yeah, tools and decorations are always appreciated!";
+  secondMenuSentences [0] = u8"Stones and wands are available!";
+  secondMenuSentences [1] = u8"The last one tried to decorate too much,";
+  secondMenuSentences [2] = u8"it ended up nasty in stone age! :)";
+  secondMenuSentences [3] = u8"The age is still nasty,";
+  secondMenuSentences [4] = u8"decoration isn't jet above strength. :)";
+  secondMenuSentences [5] = u8"At least a little class after so many years!";
+  secondMenuSentences [6] = u8"Yeah, decoration empty handed is still decoration!";
+  secondMenuSentences [7] = u8"Pay attention to your nose, decoration isn't important!";
+  startPoints [0] = { SCREEN_W - 60, SCREEN_H - 10 };
+  startPoints [1] = { SCREEN_W - 60, SCREEN_H - 6 };
 };
 
 
-void Narrator::insertion ( const unsigned short& arg )
+void Narrator::insertion ( const unsigned short& instance )
 {
   // guide of passed argument code:
-  // first digit: the id of the object
-  // second digit: the sphere of the sentence
-  // third digit: the id of the sentence
+  // 1: clear four first line
+  // 2: clear two last line
+  // first digit: element
+  // second digit: sphere
+  // third digit: sentence
 
-  // first scene:
-  COORD temp { startPoint };
-  for ( unsigned char i = 0; i < 3; i++ )
+  COORD pointOne { startPoints [0] };
+  COORD pointTwo { startPoints [1] };
+  if ( instance == 1 )
   {
-    colourInserter ( sceneOne [i], colour, temp );
-    temp.Y += 1;
-  }
+    for ( unsigned char i = 0; i < 4; i++ )
+    {
+      colourInserter ( u8"                                                          ", pointOne );
+      pointOne.Y += 1;
+    }
+  } else
+    if ( instance == 2 )
+    {
+      pointOne.Y += 4;
+      for ( unsigned char i = 0; i < 2; i++ )
+      {
+        colourInserter ( u8"                                                          ", pointOne );
+        pointOne.Y += 1;
+      }
+    } else
+    {
+      unsigned char tempOne { 0 };
+      unsigned char tempTwo { 0 };
+      unsigned char tempThree { 0 };
+      tempOne = ( instance / 100 );
+      tempTwo = ( ( instance % 100 ) / 10 );
+      tempThree = ( ( instance % 100 ) % 10 );
+      int rnd { 0 };
+
+      switch ( tempOne )
+      {
+        case 1:
+          // scenes:
+          for ( unsigned char i = 0; i < 3; i++ )
+          {
+            colourInserter ( scenes [tempTwo][i], colours [0], pointOne );
+            pointOne.Y += 1;
+          }
+          currentScene = tempTwo;
+          break;
+        case 2:
+          // menus:
+          if ( tempTwo == 1 )
+          {
+            if ( tempThree == 0 )
+            {
+              rnd = ( rand () % 2 + 1 );
+              switch ( rnd )
+              {
+                case 1:
+                  colourInserter ( firstMenuSentences [0], colours [1], pointTwo );
+                  pointTwo.Y += 1;
+                  colourInserter ( firstMenuSentences [1], colours [1], pointTwo );
+                  break;
+                case 2:
+                  colourInserter ( firstMenuSentences [2], colours [1], pointTwo );
+                  break;
+              }
+            } else
+              colourInserter ( firstMenuSentences [3], colours [1], pointTwo );
+          } else
+            if ( tempTwo == 2 )
+            {
+              switch ( tempThree )
+              {
+                case 0:
+                  rnd = ( rand () % 2 + 1 );
+                  if ( rnd == 1 )
+                    colourInserter ( secondMenuSentences [0], colours [1], pointTwo );
+                  else
+                  {
+                    colourInserter ( secondMenuSentences [1], colours [1], pointTwo );
+                    pointTwo.Y += 1;
+                    colourInserter ( secondMenuSentences [2], colours [1], pointTwo );
+                  }
+                  break;
+                case 1:
+                  colourInserter ( secondMenuSentences [3], colours [1], pointTwo );
+                  pointTwo.Y += 1;
+                  colourInserter ( secondMenuSentences [4], colours [1], pointTwo );
+                  break;
+                case 2:
+                  colourInserter ( secondMenuSentences [5], colours [1], pointTwo );
+                  break;
+                case 3:
+                  colourInserter ( secondMenuSentences [6], colours [1], pointTwo );
+                  break;
+                case 4:
+                  colourInserter ( secondMenuSentences [7], colours [1], pointTwo );
+                  break;
+              }
+            }
+          break;
+      }
+    }
+};
+
+
+const unsigned char& Narrator::get ( void )
+{
+  return currentScene;
 };
 
 

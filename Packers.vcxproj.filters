@@ -39,10 +39,10 @@
     <ClInclude Include="Packers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Status.h">
+    <ClInclude Include="Menus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Menus.h">
+    <ClInclude Include="Status.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Infobars.h">
@@ -71,13 +71,13 @@
     <ClCompile Include="Console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Menus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Status.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Infobars.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Menus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -93,16 +93,19 @@
     <Image Include="ScreenShot_2.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="ScreenShot_4.jpg">
+    <Image Include="ScreenShot_6.jpg">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="ScreenShot_5.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="ScreenShot_3-2.jpg">
+    <Image Include="ScreenShot_4.jpg">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="ScreenShot_3-3.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ScreenShot_3-2.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
