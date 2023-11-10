@@ -59,4 +59,4 @@ cmake --build build-path
 I appreciate any contribution from anyone, who sees that the project deserves his precious time.
 
 # Copyright
-This is not a freeware and the idea itself, the source code and the literature within is copyrighted. The Source code only can just be used for teaching purposes and in limited ways. For any other uses the creator's written permission and acknowledgement is needed.
+Refer to license file provided within SOFTWARE itself.
